@@ -4,21 +4,34 @@ const mysql = require('mysql');
 const cors = require('cors');
 const router = express.Router();
 
-const port = 3000;
+const port = 3000;+
 app.use(cors());
 app.use(express.json());
 app.use("/api", router);
 
 const db = mysql.createConnection({
-    user: "root",
-    host: "localhost",
-    password: "",
-    database: "db_test01"
+    user: "uepzw3x0zi26ntch",
+    host: "bh00hsorb41q0ngjlvcq-mysql.services.clever-cloud.com",
+    password: "Q9K1GF89PQzEeNdraXRN",
+    database: "bh00hsorb41q0ngjlvcq"
 });
 
-router.get('/', (req, res) => {
-    res.send('Hello');
-}); 
+router.get('/', async (req, res) => {
+    try {
+        await db.query(`
+            CREATE TABLE tb_user (
+                id INT PRIMARY KEY AUTO_INCREMENT,
+                name VARCHAR(50),
+                email VARCHAR(100),
+                password VARCHAR(50)
+            )
+        `);
+        res.send('Table created successfully'); // Send success message
+    } catch (err) {
+        console.error('Error creating table:', err);
+        res.status(500).send('Error creating table'); // Send error message
+    }
+});
 
 router.get('/users', (req, res) => {
     const q = "SELECT * FROM tb_user";
